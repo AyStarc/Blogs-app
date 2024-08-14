@@ -13,6 +13,7 @@ const app = express();
 
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(express.json());
+app.use(cookieparser());
 
 mongoose.connect('mongodb+srv://ayushsinghh2203:987654321@cluster1.kt7jb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1')
 
@@ -37,12 +38,35 @@ app.post('/login', async (req, res) => {
     const passok = bcrypt.compareSync(password, currentUser.password);
 
     // can't the payload only be username?
-    jwt.sign({ username: username, id: currentUser._id }, secret, {}, (err, token) => {
+    if (passok) {
+        jwt.sign({ username: username, id: currentUser._id }, secret, {}, (err, token) => {
+            if (err) throw err;
+
+            res.cookie('token', token).json('ok');
+        });
+    }
+
+    else {
+        res.status(400).json('wrong creds');
+    }
+
+})
+
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, (err, info) => {
         if (err) throw err;
-        res.cookie('token', token).json('ok');
+        res.json(info);
+        console.log(info);
     });
 
 })
+
+app.post('/logout', (req,res) => {
+    res.cookie('token', '').json('ok');
+
+})
+
 
 app.listen(4000, () => {
     console.log("Server running at http://localhost:4000");
