@@ -19,7 +19,7 @@ mongoose.connect('mongodb+srv://ayushsinghh2203:987654321@cluster1.kt7jb.mongodb
 
 // Route handler for POST /register
 app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password } = req.body; // destructure username, password from body
 
     try {
         const newuser = await User.create({ username, password: bcrypt.hashSync(password, salt) });
@@ -27,27 +27,37 @@ app.post('/register', async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        res.status(400).json(e);
+        res.status(400).json(e); // status code for client side handling
     }
 });
 
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    const currentUser = await User.findOne({ username });
+    const { username, password } = req.body; // destructure username, password from body
 
-    const passok = bcrypt.compareSync(password, currentUser.password);
+    const currentUser = await User.findOne({ username }); // find user in db
+
+    // Handle the case when user doesn't exist
+
+    const passok = bcrypt.compareSync(password, currentUser.password); // compare the pw
 
     // can't the payload only be username?
     if (passok) {
+        // create a jwt token
         jwt.sign({ username: username, id: currentUser._id }, secret, {}, (err, token) => {
             if (err) throw err;
 
-            res.cookie('token', token).json('ok');
+            res.cookie('token', token).json({
+                username, id: currentUser._id
+            });
+            // cookie response is sent name = 'token' and value = token
+            // the browser will store the cookie and include it in subsequent requests to the server
+            // alongside json response is sent
         });
     }
 
+    // wrong password
     else {
-        res.status(400).json('wrong creds');
+        res.status(400).json('wrong creds'); 
     }
 
 })
@@ -62,7 +72,11 @@ app.get('/profile', (req, res) => {
 
 })
 
-app.post('/logout', (req,res) => {
+app.post('/logout', (req, res) => {
+    
+    // the recieved cookie/token cleared, user session terminated
+    // same cookie named 'token' is cleared
+    // matched only based on cookie name? there has to be another way
     res.cookie('token', '').json('ok');
 
 })

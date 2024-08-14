@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import React from 'react'
 import { Navigate } from 'react-router-dom';
+import { UserContext } from '../Context/usercontext';
 
 export default function Loginpage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const {setUserInfo} = useContext(UserContext);
 
   async function login(e) {
     e.preventDefault();
@@ -19,7 +21,11 @@ export default function Loginpage() {
       })
 
     if (response.ok) {
-      setRedirect(true);
+      response.json().then((currentUser) => {
+        setUserInfo(currentUser);
+        setRedirect(true);
+      }
+      )
     }
     else {
       alert('User does not exist or wrong credentials');

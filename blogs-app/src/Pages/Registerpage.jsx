@@ -6,7 +6,7 @@ export default function Registerpage() {
     const [password, setPassword] = useState('');
 
     async function register(e) {
-        e.preventDefault(); //When a form is submitted, the default behavior is for
+        e.preventDefault(); // When a form is submitted, the default behavior is for
         // the browser to send the form data to the server and reload the page.
         // Using e.preventDefault() prevents this default action
 
