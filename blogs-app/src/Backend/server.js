@@ -5,8 +5,11 @@ import User from '../Models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieparser from 'cookie-parser';
+import multer from 'multer';
+import fs from 'fs';
+import Post from "../Models/post.js";
 
-
+const uploadMiddleware = multer({ dest: 'uploads/' });
 const salt = bcrypt.genSaltSync(10);
 const secret = "jhvjgvjv"; // for jwt
 const app = express();
@@ -57,7 +60,7 @@ app.post('/login', async (req, res) => {
 
     // wrong password
     else {
-        res.status(400).json('wrong creds'); 
+        res.status(400).json('wrong creds');
     }
 
 })
@@ -73,13 +76,27 @@ app.get('/profile', (req, res) => {
 })
 
 app.post('/logout', (req, res) => {
-    
+
     // the recieved cookie/token cleared, user session terminated
     // same cookie named 'token' is cleared
     // matched only based on cookie name? there has to be another way
     res.cookie('token', '').json('ok');
 
 })
+
+app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+    const { originalname, path } = req.file;
+    const extension = originalname.split('.')[1];
+    const newPath = path + '.' + extension;
+    fs.renameSync(path, newPath);
+
+    const { title, summary, content } = req.body;
+
+    const postDoc = await Post.create({
+        title, summary, content, cover: newPath
+    })
+    res.json({ files: req.file });
+});
 
 
 app.listen(4000, () => {
