@@ -107,6 +107,13 @@ app.get('/post', async (req, res) => {
     res.json(posts);
 })
 
+app.get('/post/:id', async (req, res) => {
+    const { id } = req.params;
+    const postDoc = await Post.findById(id);
+
+    res.json(postDoc);
+})
+
 app.listen(4000, () => {
     console.log("Server running at http://localhost:4000");
 });
