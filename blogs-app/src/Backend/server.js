@@ -8,6 +8,8 @@ import cookieparser from 'cookie-parser';
 import multer from 'multer';
 import fs from 'fs';
 import Post from "../Models/post.js";
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const uploadMiddleware = multer({ dest: 'uploads/' });
 const salt = bcrypt.genSaltSync(10);
@@ -98,6 +100,12 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     res.json({ files: req.file });
 });
 
+app.get('/post', async (req, res) => {
+    const posts = await Post.find()
+        .sort({ createdAt: -1 })
+        .limit(20);
+    res.json(posts);
+})
 
 app.listen(4000, () => {
     console.log("Server running at http://localhost:4000");
