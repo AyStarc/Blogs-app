@@ -6,7 +6,7 @@ export default function Postpage() {
   const [postInfo, setPostInfo] = useState(null);
   const { id } = useParams(); // destructuring post id from url, to retrieve parameters from the URL.
 
-  const {userInfo} = useContext(UserContext); // to check if current user is author => editing rights
+  const { userInfo } = useContext(UserContext); // to check if current user is author => editing rights
 
   useEffect(() => {
     fetch(`http://localhost:4000/post/${id}`).then(
@@ -26,11 +26,12 @@ export default function Postpage() {
   return (
     <div className="post-page">
       <div className="image">
-        <img src="" alt="" />
+        <img src={"http://localhost:4000/" + postInfo.cover
+        } alt="" />
       </div>
 
       <h1>
-        {postInfo.title}
+        {postInfo.title} by {postInfo.author}
       </h1>
 
       <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div>

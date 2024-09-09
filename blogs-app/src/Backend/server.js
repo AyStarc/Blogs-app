@@ -11,6 +11,7 @@ import Post from "../Models/post.js";
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+
 const uploadMiddleware = multer({ dest: 'uploads/' });
 const salt = bcrypt.genSaltSync(10);
 const secret = "jhvjgvjv"; // for jwt
@@ -19,6 +20,8 @@ const app = express();
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(cookieparser());
+app.use(express.static('./uploads'));
+
 
 mongoose.connect('mongodb+srv://ayushsinghh2203:987654321@cluster1.kt7jb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1')
 
@@ -54,6 +57,15 @@ app.post('/login', async (req, res) => {
             res.cookie('token', token).json({
                 username, id: currentUser._id
             });
+
+            // we are passing jwt tokens in cookies for authentication but we can pass them
+            // as response headers or response body as well
+
+            // this token is stored on the client side and sent in subsequent requests to maintain session
+
+            // from client side 
+            // Include the JWT in the Authorization header of subsequent requests to authenticate the user.
+
             // cookie response is sent name = 'token' and value = token
             // the browser will store the cookie and include it in subsequent requests to the server
             // alongside json response is sent
@@ -88,14 +100,20 @@ app.post('/logout', (req, res) => {
 
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     const { originalname, path } = req.file;
+    console.log("        "+path);
+    console.log(originalname);
     const extension = originalname.split('.')[1];
+
     const newPath = path + '.' + extension;
+    const pathforDB = path.split('\\')[1] + '.' + extension;
+
+    console.log(newPath);
     fs.renameSync(path, newPath);
 
     const { title, summary, content } = req.body;
 
     const postDoc = await Post.create({
-        title, summary, content, cover: newPath
+        title, summary, content, cover: pathforDB
     })
     res.json({ files: req.file });
 });

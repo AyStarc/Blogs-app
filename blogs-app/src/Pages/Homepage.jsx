@@ -18,7 +18,7 @@ export default function Homepage() {
     return (
         <>
             {posts.length > 0 && posts.map(post => {
-                // console.log(post.cover);
+                console.log(post.cover);
                 return <Post {...post} />
             })}
         </>

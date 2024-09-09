@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import "../App.css";
 
-export default function Post({ _id, title, summary, content, cover, createdAt }) {
+export default function Post({ _id, title, summary, cover, createdAt }) {
   return (
     <div className="post">
       <div className="image">
         <Link to={`/post/${_id}`}>
-          <img src={"http://localhost/4000/" + cover} alt="" />
+          <img src={"http://localhost:4000/" + cover
+          } alt="" />
         </Link>
 
       </div>

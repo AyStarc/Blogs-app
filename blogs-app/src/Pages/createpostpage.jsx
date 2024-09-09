@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext,useState } from 'react'
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from 'react-router-dom';
 import Editor from '../Components/editor';
+import { UserContext } from '../Context/usercontext';
+
 
 export default function Createpostpage() {
     const [redirect, setRedirect] = useState(false);
@@ -11,12 +13,17 @@ export default function Createpostpage() {
     const [content, setContent] = useState('');
     const [files, setFiles] = useState('');
 
+    const { userInfo } = useContext(UserContext);
+
+
     async function createNewPost(e) {
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);
         data.set('content', content);
         data.set('file', files?.[0]);
+        console.log(userInfo.username);
+        data.set('author',userInfo.username);
 
         e.preventDefault();
         const response = await fetch('http://localhost:4000/post',

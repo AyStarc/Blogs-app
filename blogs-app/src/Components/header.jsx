@@ -28,9 +28,10 @@ export default function Header() {
         <header>
             <Link to="/" className='logo'> MyBlog</Link>
             <nav>
-                {
+                {                    
                     username && (
                         <>
+                            <h1>Hello ! {username}</h1>
                             <Link to={"/create"}>Create New Post</Link>
                             <button onClick={Logout}>Logout</button>
                         </>
