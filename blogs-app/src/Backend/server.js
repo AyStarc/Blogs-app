@@ -100,8 +100,7 @@ app.post('/logout', (req, res) => {
 
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     const { originalname, path } = req.file;
-    console.log("        "+path);
-    console.log(originalname);
+    console.log("        " + path);
     const extension = originalname.split('.')[1];
 
     const newPath = path + '.' + extension;
@@ -110,15 +109,17 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     console.log(newPath);
     fs.renameSync(path, newPath);
 
-    const { title, summary, content } = req.body;
+    const { title, summary, content, author } = req.body;
+
+    console.log("in server" + author);
 
     const postDoc = await Post.create({
-        title, summary, content, cover: pathforDB
+        title, summary, content, cover: pathforDB, author
     })
     res.json({ files: req.file });
 });
 
-app.get('/post', async (req, res) => {
+app.get('/posts', async (req, res) => {
     const posts = await Post.find()
         .sort({ createdAt: -1 })
         .limit(20);
@@ -129,6 +130,11 @@ app.get('/post/:id', async (req, res) => {
     const { id } = req.params;
     const postDoc = await Post.findById(id);
 
+    res.json(postDoc);
+})
+
+app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
+    
     res.json(postDoc);
 })
 
