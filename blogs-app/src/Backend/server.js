@@ -1,6 +1,6 @@
-import express, { json } from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+import express, { json } from "express"; // library import and destructuring
+import cors from "cors"; // default export entire module named as cors
+import mongoose from "mongoose"; 
 import User from '../Models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -17,13 +17,17 @@ const salt = bcrypt.genSaltSync(10);
 const secret = "jhvjgvjv"; // for jwt
 const app = express();
 
+
+// app.use() is the syntax used to register middleware in an Express application
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
-app.use(express.json());
-app.use(cookieparser());
+app.use(express.json()); // automatically parses the incoming JSON requests
+app.use(cookieparser()); // to parse cookies attached to the client request
 app.use(express.static('./uploads'));
 
 
 mongoose.connect('mongodb+srv://ayushsinghh2203:987654321@cluster1.kt7jb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1')
+// username, password, host, port, and database 
+// store in .env file for security
 
 // Route handler for POST /register
 app.post('/register', async (req, res) => {
@@ -134,7 +138,6 @@ app.get('/post/:id', async (req, res) => {
 })
 
 app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
-    
     res.json(postDoc);
 })
 
