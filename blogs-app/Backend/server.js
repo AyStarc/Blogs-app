@@ -142,5 +142,5 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
 })
 
 app.listen(4000, () => {
-    console.log("Server running at http://localhost:4000");
+    console.log("Server running at https://blogs-app-pc6y.onrender.com");
 });

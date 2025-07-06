@@ -6,7 +6,7 @@ export default function Post({ _id, title, summary, cover, createdAt }) {
     <Link to={`/post/${_id}`} className="block bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
       <div className="image">
         <img
-          src={`http://localhost:4000/${cover}`}
+          src={`https://blogs-app-pc6y.onrender.com/${cover}`} // https://blogs-app-pc6y.onrender.com
           alt={title}
           className="w-full h-48 object-cover"
         />

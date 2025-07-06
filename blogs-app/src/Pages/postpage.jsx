@@ -8,7 +8,7 @@ export default function Postpage() {
   const { userInfo } = useContext(UserContext); // To check if current user is the author for editing rights.
 
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`)
+    fetch(`https://blogs-app-pc6y.onrender.com/post/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -29,7 +29,7 @@ export default function Postpage() {
     <div className="max-w-3xl mx-auto p-4 bg-white rounded-lg shadow-md">
       <div className="image mb-4">
         <img
-          src={`http://localhost:4000/${postInfo.cover}`}
+          src={`https://blogs-app-pc6y.onrender.com/${postInfo.cover}`}
           alt={postInfo.title}
           className="w-full h-[50vh] object-cover rounded-lg" // Fixed height of 50% of viewport height
         />

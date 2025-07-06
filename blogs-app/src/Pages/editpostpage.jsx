@@ -17,7 +17,7 @@ export default function Editpostpage() {
 
   useEffect(
     () => {
-      fetch(`http://localhost:4000/post/${id}`).then((response) => {
+      fetch(`https://blogs-app-pc6y.onrender.com/post/${id}`).then((response) => {
         response.json().then(
           (postinfo) => {
             setTitle(postinfo.title);
@@ -40,7 +40,7 @@ export default function Editpostpage() {
     data.set('file', files?.[0]);
     data.set('author', author);
 
-    const response = await fetch(`http://localhost:4000/post`, {
+    const response = await fetch(`https://blogs-app-pc6y.onrender.com/post`, {
       method: 'PUT',
       body: data,
     })

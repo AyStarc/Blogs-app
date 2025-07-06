@@ -6,7 +6,7 @@ export default function Header() {
     const { userInfo, setUserInfo } = useContext(UserContext);
 
     useEffect(() => {
-        fetch('http://localhost:4000/profile', {
+        fetch('https://blogs-app-pc6y.onrender.com/profile', {
             credentials: 'include',
         }).then(response => {
             response.json().then(userinfo => {
@@ -16,7 +16,7 @@ export default function Header() {
     }, [setUserInfo]);
 
     function Logout() {
-        fetch('http://localhost:4000/logout', {
+        fetch('https://blogs-app-pc6y.onrender.com/logout', {
             method: 'POST',
             credentials: 'include' // cookies with session/auth information
         });

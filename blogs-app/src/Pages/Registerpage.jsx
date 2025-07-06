@@ -12,7 +12,7 @@ export default function Registerpage() {
   async function register(e) {
     e.preventDefault(); // Prevent default form submission behavior
 
-    const response = await fetch('http://localhost:4000/register', {
+    const response = await fetch('https://blogs-app-pc6y.onrender.com/register', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
       headers: { 'Content-Type': 'application/json' },

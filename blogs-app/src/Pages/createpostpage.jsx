@@ -20,7 +20,7 @@ export default function Createpostpage() {
         data.set('author', userInfo.username);
 
         e.preventDefault();
-        const response = await fetch('http://localhost:4000/post', {
+        const response = await fetch('https://blogs-app-pc6y.onrender.com/post', {
             method: 'POST',
             body: data,
         });

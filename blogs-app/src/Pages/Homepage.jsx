@@ -5,7 +5,7 @@ export default function Homepage() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:4000/posts')
+        fetch('https://blogs-app-pc6y.onrender.com/posts')
             .then((response) => response.json())
             .then((posts) => {
                 setPosts(posts);
